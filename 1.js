@@ -1,5 +1,3 @@
-
-
 function isContains(str, substr)
 {
 	return str.indexOf(substr) >= 0;
@@ -96,6 +94,46 @@ function getArrayFromList(s)
 	return a;
 
 }
+
+function getArrayFromList(count, id)
+{
+	var a = new Array()
+
+
+	for (var i = 0, j=0; i < count; i++) {
+		var ss = id+'-'+i;
+
+		if ($("#"+ss).is(':checked')) {
+			a[j]=i;
+			j++;
+		}
+	}
+	return a;
+
+}
+
+function genrateCheckbox(count, idString)
+{
+	for (var i = 0; i < count; i++) {
+		var idS = idString+'-'+i;
+		var div = '<div class="mdl-cell mdl-cell--1-col">';
+		var divEnd = '</div>';
+		var label = '<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="'+idS+'">';
+		var input = '<input type="checkbox" id="'+idS+'" class="mdl-checkbox__input">';
+		var span = '<span class="mdl-checkbox__label">'+i+'</span>';
+		var labelEnd = '</label>';
+		$("#"+idString).append(div+label+input+span+labelEnd+divEnd);
+	}
+}
+
+function genrateSelect(count, idString)
+{
+	for (var i = 0; i < count; i++) {
+		var option = '<option >'+i+'</option>';
+		$("#"+idString).append(option);
+	}
+}
+
 function genrateList()
 {
 	for (var i = 1; i < 36; i++) {
@@ -110,7 +148,17 @@ function genrateList()
 
 $(document).ready(function(){
 
-	genrateList();
+	genrateCheckbox(190, "sum-single");
+	genrateCheckbox(35, "sum-step");
+	genrateSelect(190, "sum-start");
+	genrateSelect(190, "sum-end");
+	genrateCheckbox(36, "a-six");
+	genrateCheckbox(36, "b-six");
+	genrateCheckbox(36, "c-six");
+	genrateCheckbox(36, "d-six");
+	genrateCheckbox(36, "e-six");
+	genrateCheckbox(36, "f-six");
+
 	$("#six").click(function(){
 		$("#six-ol").empty();
 		var s = $("#sum-six").val();

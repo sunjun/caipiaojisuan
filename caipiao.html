@@ -1,32 +1,112 @@
-<html>
+<!DOCTYPE html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta http-equiv="Content-Type" content="text/html;" />
+<meta charset="UTF-8">
+
 <title>彩票计算</title>
-<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="1.js">
-</script>
+
+<link rel="stylesheet" href="./mdl/material.min.css">
+<!--
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+-->
+
+<script src="./mdl/material.min.js"></script>
+<script type="text/javascript" src="jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="1.js"> </script>
 </head>
 <body>
 
-<h1>计算和值(6个数)</h1>
+<!-- Simple header with fixed tabs. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+	mdl-layout--fixed-tabs">
+	<header class="mdl-layout__header">
+		<div class="mdl-layout__header-row">
+			<!-- Title -->
+			<span class="mdl-layout-title">彩票计算器</span>
+		</div>
+		<!-- Tabs -->
+		<div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+			<a href="#fixed-tab-1" class="mdl-layout__tab is-active">方式 1</a>
+			<a href="#fixed-tab-2" class="mdl-layout__tab">方式 2</a>
+			<a href="#fixed-tab-3" class="mdl-layout__tab">Tab 3</a>
+		</div>
+	</header>
 
-<p>和：<input id="sum-six" type="text" name="he" placeholder="输入和1,14,23 或者 10-20" /></p>
-<p id="a-six">第1个数：</p>
-<p id="b-six">第2个数：</p>
-<p id="c-six">第3个数：</p>
-<p id="d-six">第4个数：</p>
-<p id="e-six">第5个数：</p>
-<p id="f-six">第6个数：</p>
-<button id="six">计算</button>
-<ol id="six-ol">
-</ol>
+	<main class="mdl-layout__content">
+	<section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+		<div class="page-content">
+			<div class="mdl-grid">
+				<div class="mdl-cell mdl-cell--12-col">
 
-<h1>计算和值(3个数)</h1>
+					<!-- Raised button -->
+					<button class="mdl-button mdl-js-button mdl-button--raised">
+						选择多个和值
+					</button>
+					<div class = "mdl-grid" id = "sum-single">
+					</div>
 
-<p>和：<input id="sum-three" type="text" name="he" placeholder="输入和" /></p>
+					<button class="mdl-button mdl-js-button mdl-button--raised">
+						选择连续和值开始
+					</button>
+					<select id = "sum-start">
+					</select>
 
-<button id="three">计算</button>
-<ol id="three-ol">
-</ol>
+					<button class="mdl-button mdl-js-button mdl-button--raised">
+						选择连续和值结束
+					</button>
+					<select id = "sum-end">
+					</select>
+
+					<br />
+
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+						选择跨度
+					</button>
+					<div class = "mdl-grid" id = "sum-step"> </div>
+
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+						第1个数：
+					</button>
+					<div class = "mdl-grid" id="a-six"> </div>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+						第2个数：
+					</button>
+					<div class = "mdl-grid" id="b-six"> </div>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+						第3个数：
+					</button>
+					<div class = "mdl-grid" id="c-six"> </div>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+						第4个数：
+					</button>
+					<div class = "mdl-grid" id="d-six"> </div>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+						第5个数：
+					</button>
+					<div class = "mdl-grid" id="e-six"> </div>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+						第6个数：
+					</button>
+					<div class = "mdl-grid" id="f-six"> </div>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="six">计算</button>
+					<ol id="six-ol">
+					</ol>
+
+
+				</div>
+			</div>
+
+			<!-- Your content goes here --></div>
+	</section>
+	<section class="mdl-layout__tab-panel" id="fixed-tab-2">
+		<div class="page-content"><!-- Your content goes here --></div>
+	</section>
+	<section class="mdl-layout__tab-panel" id="fixed-tab-3">
+		<div class="page-content"><!-- Your content goes here --></div>
+	</section>
+	</main>
+</div>
+
+
 </body>
 </html>
