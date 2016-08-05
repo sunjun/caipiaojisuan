@@ -137,6 +137,26 @@ function genrateSelect(count, idString)
 	}
 }
 
+function reGetArrayFromSelection2(sumArray)
+{
+	var startString = $("#sum-start-two").find("option:selected").text();
+	var endString = $("#sum-end-two").find("option:selected").text();
+
+	var start = Number(startString);
+	var end = Number(endString);
+
+	if (end <= start) {
+		return sumArray;
+	}
+
+	var len = sumArray.length;
+	for (var i = len, j = 0; j <= end - start; i++, j++) {
+		sumArray[i] = start + j;
+	}
+
+	return sumArray;
+
+}
 function reGetArrayFromSelection(sumArray)
 {
 	var startString = $("#sum-start").find("option:selected").text();
@@ -246,6 +266,72 @@ function getNumberCount(aArray,bArray,cArray,dArray,eArray,fArray)
 	if (fArray.length > 0)
 		count++;
 	return count;
+}
+
+function sumOfArray(a)
+{
+	var sum = 0;
+	for (var i = 0; i < a.length; i++) {
+		sum += a[i];
+	}
+	return sum;
+}
+
+function stepNumber(a, b, c, d, e, f, aArray)
+{
+	var max = -1;
+	var min = 200;
+
+	var aa = aArray.concat();
+
+	var len = aa.length;
+	var i = 0;
+	if (a != -1) {
+		aa[len+i] = a;
+		i++;
+	}
+	if (b != -1) {
+		aa[len+i] = b;
+		i++;
+	}
+	if (c != -1) {
+		aa[len+i] = c;
+		i++;
+	}
+	if (d != -1) {
+		aa[len+i] = d;
+		i++;
+	}
+	if (e != -1) {
+		aa[len+i] = e;
+		i++;
+	}	
+	if (f != -1) {
+		aa[len+i] = f;
+		i++;
+	}
+
+	for (i = 0; i < aa.length; i++) {
+		if (aa[i] > max)
+			max = aa[i];
+		if (aa[i] < min)
+			min = aa[i];
+	}
+	return max - min;
+}
+
+function getABCMaxMinStep(a, b, c) {
+	max = a;
+	if (b>max)
+		max =b;
+	if (c>max)
+		max =c;
+	min = a;
+	if (b<min)
+		min =b;
+	if (c<min)
+		min =c;
+	return max - min;
 }
 
 $(document).ready(function(){
@@ -443,7 +529,7 @@ $(document).ready(function(){
         																count++;
         															}
         														}
-        														}
+        													}
         												}
         											}
         										}
@@ -468,13 +554,336 @@ $(document).ready(function(){
     });
 
 
-$("#six-2").click(function(){
+$("#six-two").click(function(){
 	$("#six-ol-two").empty();
 
-		var count = 0;
-		var sumArray = getArrayFromCheckbox(SUM_COUNT, "sum-single-two");
-		var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-step-two");
-		var aArray = getArrayFromCheckbox(NUMBER_COUNT, "a-six-two");
+	var N = NUMBER_COUNT;
+	var count = 0;
+	var sumArray = getArrayFromCheckbox(SUM_COUNT, "sum-single-two");
+	var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-step-two");
+	var aArray = getArrayFromCheckbox(NUMBER_COUNT, "a-six-two");
+
+	var numberCount = Number($("#number-count").find("option:selected").text());
+    sumArray = reGetArrayFromSelection2(sumArray);
+
+    a = -1; b = -1; c = -1; d = -1; e = -1; f = -1;
+	if ((aArray.length > 0) && (numberCount > aArray.length)) {
+		var loop = numberCount - aArray.length;
+		switch (loop) {
+			case 5:
+			for (var i=0; i<sumArray.length; i++){
+				for (a=1; a<N; a++) {
+					for (b=a+1; b<N; b++) {
+						for (c=b+1; c<N; c++) {
+							for (d=c+1; d<N; d++) {
+								for (e=d+1; e<N; e++) {
+									if ((a+b+c+d+e) == (sumArray[i]-sumOfArray(aArray))) {
+										if (!numberInArray(a, aArray) && !numberInArray(b, aArray) && !numberInArray(c, aArray) && !numberInArray(d, aArray) && !numberInArray(e, aArray)){
+											step = stepNumber(a, b, c, d, e, f, aArray);
+											if(numberInArray(step, stepArray)){
+												$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+e+"+"+aArray[0]+"</li>");
+												count++;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 4:
+			for (var i=0; i<sumArray.length; i++){
+				for (a=1; a<N; a++) {
+					for (b=a+1; b<N; b++) {
+						for (c=b+1; c<N; c++) {
+							for (d=c+1; d<N; d++) {
+								if ((a+b+c+d) == (sumArray[i]-sumOfArray(aArray))) {
+									if (!numberInArray(a, aArray) && !numberInArray(b, aArray) && !numberInArray(c, aArray) && !numberInArray(d, aArray)){
+										step = stepNumber(a, b, c, d, e, f, aArray);
+										if(numberInArray(step, stepArray)){
+											if (aArray.length == 1) {
+												$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+aArray[0]+"</li>");
+											} else if (aArray.length == 2) {
+												$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+											}
+											count++;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 3:
+			for (var i=0; i<sumArray.length; i++){
+				for (a=1; a<N; a++) {
+					for (b=a+1; b<N; b++) {
+						for (c=b+1; c<N; c++) {
+							if ((a+b+c) == (sumArray[i]-sumOfArray(aArray))) {
+								if (!numberInArray(a, aArray) && !numberInArray(b, aArray) && !numberInArray(c, aArray)){
+									step = stepNumber(a, b, c, d, e, f, aArray);
+									if(numberInArray(step, stepArray)){
+										if (aArray.length == 1) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"</li>");
+										} else if (aArray.length == 2) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+										} else if (aArray.length == 3) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+										}
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 2:
+			var found10 = false;
+			for (var i = 0; i < aArray.length; i++) {
+				if(aArray[i]>=10) {
+					found10 = true;
+					break;
+				}
+			}
+			if (numberCount == 3 && !found10) {
+				for (var i=0; i<sumArray.length; i++){
+					for (a=0; a<N; a++) {
+						for (b=0; b<N; b++) {
+							if ((a+b) == (sumArray[i]-sumOfArray(aArray))) {
+								step = stepNumber(a, b, c, d, e, f, aArray);
+								if(numberInArray(step, stepArray)){
+									if (aArray.length == 1) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+									}
+									count++;
+								}
+							}
+						}
+					}
+				}
+				
+			} else {
+				for (var i=0; i<sumArray.length; i++){
+					for (a=1; a<N; a++) {
+						for (b=a+1; b<N; b++) {
+							if ((a+b) == (sumArray[i]-sumOfArray(aArray))) {
+								if (!numberInArray(a, aArray) && !numberInArray(b, aArray)){
+									step = stepNumber(a, b, c, d, e, f, aArray);
+									if(numberInArray(step, stepArray)){
+										if (aArray.length == 1) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+										} else if (aArray.length == 2) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+										} else if (aArray.length == 3) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+										} else if (aArray.length == 4) {
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+										}
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 1:
+			var found10 = false;
+			for (var i = 0; i < aArray.length; i++) {
+				if(aArray[i]>=10) {
+					found10 = true;
+					break;
+				}
+			}
+			if (numberCount == 3 && !found10) {
+				for (var i=0; i<sumArray.length; i++){
+					for (a=0; a<N; a++) {
+						if ((a) == (sumArray[i]-sumOfArray(aArray))) {
+							step = stepNumber(a, b, c, d, e, f, aArray);
+							if(numberInArray(step, stepArray)){
+								if (aArray.length == 2) {
+									$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+								}
+								count++;
+							}
+						}
+					}
+				}
+			} else {
+				for (var i=0; i<sumArray.length; i++){
+					for (a=1; a<N; a++) {
+						if ((a) == (sumArray[i]-sumOfArray(aArray))) {
+							if (!numberInArray(a, aArray)){
+								step = stepNumber(a, b, c, d, e, f, aArray);
+								if(numberInArray(step, stepArray)){
+									if (aArray.length == 1) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+									} else if (aArray.length == 2) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+									} else if (aArray.length == 3) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+									} else if (aArray.length == 4) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+									} else if (aArray.length == 5) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+aArray[4]+"</li>");
+									}
+									count++;
+								}
+							}
+						}
+					}
+				}
+				
+			}
+			break;
+		}
+
+	} else if ((aArray.length > 0) && (numberCount < aArray.length)){
+
+		switch (numberCount) {
+			case 6:
+			N = aArray.length;
+			for (var i=0; i<sumArray.length; i++){
+				for (aj = 0; aj <N; aj++) {
+					a = aArray[aj]
+					for (bj = aj + 1; bj<N; bj++) {
+						b = aArray[bj];
+						for (cj = bj + 1; cj<N; cj++) {
+							c = aArray[cj];
+							for (dj = cj + 1; dj<N; dj++) {
+								d = aArray[dj];
+								for (ej = dj + 1; ej<N; ej++) {
+									e = aArray[ej];
+									for (fj = ej + 1; fj<N; fj++) {
+										f = aArray[fj];
+										if ((a+b+c+d+e+f) == sumArray[i]) {
+											if(numberInArray(f-a, stepArray)){
+												$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+e+"+"+f+"</li>");
+												count++;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 5:
+			N = aArray.length;
+			for (var i=0; i<sumArray.length; i++){
+				for (aj = 0; aj <N; aj++) {
+					a = aArray[aj]
+					for (bj = aj + 1; bj<N; bj++) {
+						b = aArray[bj];
+						for (cj = bj + 1; cj<N; cj++) {
+							c = aArray[cj];
+							for (dj = cj + 1; dj<N; dj++) {
+								d = aArray[dj];
+								for (ej = dj + 1; ej<N; ej++) {
+									e = aArray[ej];
+									if ((a+b+c+d+e) == sumArray[i]) {
+										if(numberInArray(e-a, stepArray)){
+											$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+e+"</li>");
+											count++;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 4:
+			N = aArray.length;
+			for (var i=0; i<sumArray.length; i++){
+				for (aj = 0; aj <N; aj++) {
+					a = aArray[aj]
+					for (bj = aj + 1; bj<N; bj++) {
+						b = aArray[bj];
+						for (cj = bj + 1; cj<N; cj++) {
+							c = aArray[cj];
+							for (dj = cj + 1; dj<N; dj++) {
+								d = aArray[dj];
+								if ((a+b+c+d) == sumArray[i]) {
+									if(numberInArray(d-a, stepArray)){
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"</li>");
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 3:
+			var found10 = false;
+        	for (var i = 0; i < aArray.length; i++) {
+        		if(aArray[i]>=10) {
+        			found10 = true;
+        			break;
+        		}
+        	}
+			if (found10){
+				N = aArray.length;
+				for (var i=0; i<sumArray.length; i++){
+					for (aj = 0; aj <N; aj++) {
+						a = aArray[aj]
+						for (bj = aj + 1; bj<N; bj++) {
+							b = aArray[bj];
+							for (cj = bj + 1; cj<N; cj++) {
+								c = aArray[cj];
+								if ((a+b+c) == sumArray[i]) {
+									if(numberInArray(d-a, stepArray)){
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"</li>");
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+
+			} else {
+				N = aArray.length;
+				for (var i=0; i<sumArray.length; i++){
+					for (aj = 0; aj <N; aj++) {
+						a = aArray[aj]
+						for (bj = 0; bj<N; bj++) {
+							b = aArray[bj];
+							for (cj = 0; cj<N; cj++) {
+								c = aArray[cj];
+								if ((a+b+c) == sumArray[i]) {
+									if(numberInArray(getABCMaxMinStep(a,b,c), stepArray)){
+
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"</li>");
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+
+		}
+
+	}
+	
+	if (count == 0) {
+		$("#six-ol-two").append("<li>无结果</li>");
+	}
 
 });
 
