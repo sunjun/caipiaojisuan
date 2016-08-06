@@ -157,10 +157,11 @@ function reGetArrayFromSelection2(sumArray)
 	return sumArray;
 
 }
-function reGetArrayFromSelection(sumArray)
+
+function reGetArrayFromSelection(start, end, sumArray)
 {
-	var startString = $("#sum-start").find("option:selected").text();
-	var endString = $("#sum-end").find("option:selected").text();
+	var startString = $("#"+start).find("option:selected").text();
+	var endString = $("#"+end).find("option:selected").text();
 
 	var start = Number(startString);
 	var end = Number(endString);
@@ -174,8 +175,16 @@ function reGetArrayFromSelection(sumArray)
 		sumArray[i] = start + j;
 	}
 
-	return sumArray;
-
+	sumArray.sort();
+	var re=[sumArray[0]];
+	for(var i = 1; i < sumArray.length; i++)
+	{
+		if( sumArray[i] !== re[re.length-1])
+		{
+			re.push(sumArray[i]);
+		}
+	}
+	return re;
 }
 
 function genrateList()
@@ -373,7 +382,7 @@ $(document).ready(function(){
 
         //需要计算几个数
         var numberCount = getNumberCount(aArray,bArray,cArray,dArray,eArray,fArray);
-        sumArray = reGetArrayFromSelection(sumArray);
+        sumArray = reGetArrayFromSelection("sum-start", "sum-end",sumArray);
 
 
         var found10 = false;
@@ -564,7 +573,8 @@ $("#six-two").click(function(){
 	var aArray = getArrayFromCheckbox(NUMBER_COUNT, "a-six-two");
 
 	var numberCount = Number($("#number-count").find("option:selected").text());
-    sumArray = reGetArrayFromSelection2(sumArray);
+
+	sumArray = reGetArrayFromSelection("sum-start-two", "sum-end-two",sumArray);
 
     a = -1; b = -1; c = -1; d = -1; e = -1; f = -1;
 	if ((aArray.length > 0) && (numberCount > aArray.length)) {
@@ -880,7 +890,7 @@ $("#six-two").click(function(){
 		}
 
 	}
-	
+
 	if (count == 0) {
 		$("#six-ol-two").append("<li>无结果</li>");
 	}
@@ -888,4 +898,35 @@ $("#six-two").click(function(){
 });
 
 
+$("#reset-1").click(function(){
+
+	window.location.reload();
+
+	setAll("sum-single", false, SUM_COUNT);
+
+	setAll("sum-step", false, STEP_COUNT);
+
+	$("#sum-start").find("option[text='0']").attr("selected",true); 
+	$("#sum-end").find("option[text='0']").attr("selected",true); 
+
+
+	setAll("a-six", false, NUMBER_COUNT);
+	setAll("b-six", false, NUMBER_COUNT);
+	setAll("c-six", false, NUMBER_COUNT);
+	setAll("d-six", false, NUMBER_COUNT);
+	setAll("e-six", false, NUMBER_COUNT);
+	setAll("f-six", false, NUMBER_COUNT);
+
+	$("#six-ol").empty();
+});
+
+$("#reset-2").click(function(){
+	window.location.reload();
+
+	setAll("sum-single-two", false, SUM_COUNT);
+	setAll("sum-step-two", false, STEP_COUNT);
+	setAll("a-six-two", false, NUMBER_COUNT);
+
+	$("#six-ol-two").empty();
+});
 });
