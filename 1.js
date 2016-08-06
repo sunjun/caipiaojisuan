@@ -361,11 +361,11 @@ $(document).ready(function(){
 	setAllButton();
 
 
-	genrateCheckbox(SUM_COUNT, "sum-single-two");
-	genrateCheckbox(STEP_COUNT, "sum-step-two");
-	genrateSelect(SUM_COUNT, "sum-start-two");
-	genrateSelect(SUM_COUNT, "sum-end-two");
-	genrateCheckbox(NUMBER_COUNT, "a-six-two");
+	genrateCheckbox(SUM_COUNT-84, "sum-single-two");
+	genrateCheckbox(STEP_COUNT-15, "sum-step-two");
+	genrateSelect(SUM_COUNT-84, "sum-start-two");
+	genrateSelect(SUM_COUNT-84, "sum-end-two");
+	genrateCheckbox(NUMBER_COUNT-15, "a-six-two");
 
 	$("#six").click(function(){
 		$("#six-ol").empty();
@@ -566,11 +566,11 @@ $(document).ready(function(){
 $("#six-two").click(function(){
 	$("#six-ol-two").empty();
 
-	var N = NUMBER_COUNT;
+	var N = NUMBER_COUNT - 15;
 	var count = 0;
-	var sumArray = getArrayFromCheckbox(SUM_COUNT, "sum-single-two");
+	var sumArray = getArrayFromCheckbox(SUM_COUNT-84, "sum-single-two");
 	var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-step-two");
-	var aArray = getArrayFromCheckbox(NUMBER_COUNT, "a-six-two");
+	var aArray = getArrayFromCheckbox(NUMBER_COUNT-15, "a-six-two");
 
 	var numberCount = Number($("#number-count").find("option:selected").text());
 
@@ -654,6 +654,7 @@ $("#six-two").click(function(){
 			}
 			break;
 			case 2:
+			/*
 			var found10 = false;
 			for (var i = 0; i < aArray.length; i++) {
 				if(aArray[i]>=10) {
@@ -679,6 +680,7 @@ $("#six-two").click(function(){
 				}
 				
 			} else {
+				*/
 				for (var i=0; i<sumArray.length; i++){
 					for (a=1; a<N; a++) {
 						for (b=a+1; b<N; b++) {
@@ -702,9 +704,10 @@ $("#six-two").click(function(){
 						}
 					}
 				}
-			}
+			//}
 			break;
 			case 1:
+			/*
 			var found10 = false;
 			for (var i = 0; i < aArray.length; i++) {
 				if(aArray[i]>=10) {
@@ -727,6 +730,7 @@ $("#six-two").click(function(){
 					}
 				}
 			} else {
+				*/
 				for (var i=0; i<sumArray.length; i++){
 					for (a=1; a<N; a++) {
 						if ((a) == (sumArray[i]-sumOfArray(aArray))) {
@@ -751,7 +755,7 @@ $("#six-two").click(function(){
 					}
 				}
 				
-			}
+			//}
 			break;
 		}
 
@@ -837,6 +841,7 @@ $("#six-two").click(function(){
 			}
 			break;
 			case 3:
+			/*
 			var found10 = false;
         	for (var i = 0; i < aArray.length; i++) {
         		if(aArray[i]>=10) {
@@ -845,6 +850,7 @@ $("#six-two").click(function(){
         		}
         	}
 			if (found10){
+				*/
 				N = aArray.length;
 				for (var i=0; i<sumArray.length; i++){
 					for (aj = 0; aj <N; aj++) {
@@ -863,7 +869,7 @@ $("#six-two").click(function(){
 						}
 					}
 				}
-
+/*
 			} else {
 				N = aArray.length;
 				for (var i=0; i<sumArray.length; i++){
@@ -885,6 +891,7 @@ $("#six-two").click(function(){
 					}
 				}
 			}
+			*/
 			break;
 
 		}
@@ -918,6 +925,15 @@ $("#reset-1").click(function(){
 	setAll("f-six", false, NUMBER_COUNT);
 
 	$("#six-ol").empty();
+});
+
+$("#clear-1").click(function(){
+	$("#six-ol").empty();
+});
+
+
+$("#clear-2").click(function(){
+	$("#six-ol-two").empty();
 });
 
 $("#reset-2").click(function(){
