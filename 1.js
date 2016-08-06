@@ -2,6 +2,10 @@ SUM_COUNT = 190;
 STEP_COUNT = 36;
 NUMBER_COUNT = 36;
 
+SUM_COUNT_2 = 105;
+STEP_COUNT_2 = 20;
+NUMBER_COUNT_2 = 20;
+
 function isContains(str, substr)
 {
 	return str.indexOf(substr) >= 0;
@@ -114,6 +118,30 @@ function getArrayFromCheckbox(count, id)
 	}
 	return a;
 }
+
+
+function genrateCheckboxWithStep(count, idString, step)
+{
+	var row = count / step + 1;
+	for (var j = 0; j < step; j++) {
+		for (var i = 0; i < row; i++) {
+			var ij = i * step + j;
+			if (ij <= count) {
+				var idS = idString+'-'+ij;
+				var div = '<div class="mdl-cell mdl-cell--1-col">';
+				var divEnd = '</div>';
+				var label = '<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="'+idS+'">';
+				var input = '<input type="checkbox" id="'+idS+'" class="mdl-checkbox__input">';
+				var span = '<span class="mdl-checkbox__label">'+ij+'</span>';
+				var labelEnd = '</label>';
+				$("#"+idString).append(div+label+input+span+labelEnd+divEnd);
+			}
+			
+		}
+		
+	}
+}
+
 
 function genrateCheckbox(count, idString)
 {
@@ -257,6 +285,14 @@ function setAllButton()
 		setAll("a-six-two", false, NUMBER_COUNT);
 	}); 
 
+	$("#a-six-all-three").click(function(){ 
+		setAll("a-six-three", true, NUMBER_COUNT);
+	}); 
+	$("#a-six-all-cancle-three").click(function(){ 
+		setAll("a-six-three", false, NUMBER_COUNT);
+	}); 
+
+
 }
 
 function getNumberCount(aArray,bArray,cArray,dArray,eArray,fArray)
@@ -351,21 +387,30 @@ $(document).ready(function(){
 	genrateCheckbox(STEP_COUNT, "sum-step");
 	genrateSelect(SUM_COUNT, "sum-start");
 	genrateSelect(SUM_COUNT, "sum-end");
-	genrateCheckbox(NUMBER_COUNT, "a-six");
-	genrateCheckbox(NUMBER_COUNT, "b-six");
-	genrateCheckbox(NUMBER_COUNT, "c-six");
-	genrateCheckbox(NUMBER_COUNT, "d-six");
-	genrateCheckbox(NUMBER_COUNT, "e-six");
-	genrateCheckbox(NUMBER_COUNT, "f-six");
+	genrateCheckboxWithStep(NUMBER_COUNT, "a-six", 10);
+	genrateCheckboxWithStep(NUMBER_COUNT, "b-six", 10);
+	genrateCheckboxWithStep(NUMBER_COUNT, "c-six", 10);
+	genrateCheckboxWithStep(NUMBER_COUNT, "d-six", 10);
+	genrateCheckboxWithStep(NUMBER_COUNT, "e-six", 10);
+	genrateCheckboxWithStep(NUMBER_COUNT, "f-six", 10);
 
 	setAllButton();
 
+	hideAll();
 
-	genrateCheckbox(SUM_COUNT-84, "sum-single-two");
-	genrateCheckbox(STEP_COUNT-15, "sum-step-two");
-	genrateSelect(SUM_COUNT-84, "sum-start-two");
-	genrateSelect(SUM_COUNT-84, "sum-end-two");
-	genrateCheckbox(NUMBER_COUNT-15, "a-six-two");
+
+	genrateCheckbox(SUM_COUNT_2, "sum-single-two");
+	genrateCheckbox(STEP_COUNT_2, "sum-step-two");
+	genrateSelect(SUM_COUNT_2, "sum-start-two");
+	genrateSelect(SUM_COUNT_2, "sum-end-two");
+	genrateCheckboxWithStep(NUMBER_COUNT_2, "a-six-two", 10);
+
+
+	genrateCheckbox(SUM_COUNT, "sum-single-three");
+	genrateCheckbox(STEP_COUNT, "sum-step-three");
+	genrateSelect(SUM_COUNT, "sum-start-three");
+	genrateSelect(SUM_COUNT, "sum-end-three");
+	genrateCheckboxWithStep(NUMBER_COUNT, "a-six-three", 10);	
 
 	$("#six").click(function(){
 		$("#six-ol").empty();
@@ -566,11 +611,11 @@ $(document).ready(function(){
 $("#six-two").click(function(){
 	$("#six-ol-two").empty();
 
-	var N = NUMBER_COUNT - 15;
+	var N = NUMBER_COUNT_2;
 	var count = 0;
-	var sumArray = getArrayFromCheckbox(SUM_COUNT-84, "sum-single-two");
-	var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-step-two");
-	var aArray = getArrayFromCheckbox(NUMBER_COUNT-15, "a-six-two");
+	var sumArray = getArrayFromCheckbox(SUM_COUNT_2, "sum-single-two");
+	var stepArray = getArrayFromCheckbox(STEP_COUNT_2, "sum-step-two");
+	var aArray = getArrayFromCheckbox(NUMBER_COUNT_2, "a-six-two");
 
 	var numberCount = Number($("#number-count").find("option:selected").text());
 
@@ -904,6 +949,346 @@ $("#six-two").click(function(){
 
 });
 
+$("#six-three").click(function(){
+	$("#six-ol-three").empty();
+
+	var N = NUMBER_COUNT;
+	var count = 0;
+	var sumArray = getArrayFromCheckbox(SUM_COUNT, "sum-single-three");
+	var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-single-three");
+	var aArray = getArrayFromCheckbox(NUMBER_COUNT, "sum-single-three");
+
+	var numberCount = Number($("#number-count").find("option:selected").text());
+
+	sumArray = reGetArrayFromSelection("sum-start-three", "sum-end-three",sumArray);
+
+    a = -1; b = -1; c = -1; d = -1; e = -1; f = -1;
+	if ((aArray.length > 0) && (numberCount > aArray.length)) {
+		var loop = numberCount - aArray.length;
+		switch (loop) {
+			case 5:
+			for (var i=0; i<sumArray.length; i++){
+				for (a=1; a<N; a++) {
+					for (b=a+1; b<N; b++) {
+						for (c=b+1; c<N; c++) {
+							for (d=c+1; d<N; d++) {
+								for (e=d+1; e<N; e++) {
+									if ((a+b+c+d+e) == (sumArray[i]-sumOfArray(aArray))) {
+										if (!numberInArray(a, aArray) && !numberInArray(b, aArray) && !numberInArray(c, aArray) && !numberInArray(d, aArray) && !numberInArray(e, aArray)){
+											step = stepNumber(a, b, c, d, e, f, aArray);
+											if(numberInArray(step, stepArray)){
+												$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+e+"+"+aArray[0]+"</li>");
+												count++;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 4:
+			for (var i=0; i<sumArray.length; i++){
+				for (a=1; a<N; a++) {
+					for (b=a+1; b<N; b++) {
+						for (c=b+1; c<N; c++) {
+							for (d=c+1; d<N; d++) {
+								if ((a+b+c+d) == (sumArray[i]-sumOfArray(aArray))) {
+									if (!numberInArray(a, aArray) && !numberInArray(b, aArray) && !numberInArray(c, aArray) && !numberInArray(d, aArray)){
+										step = stepNumber(a, b, c, d, e, f, aArray);
+										if(numberInArray(step, stepArray)){
+											if (aArray.length == 1) {
+												$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+aArray[0]+"</li>");
+											} else if (aArray.length == 2) {
+												$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+											}
+											count++;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 3:
+			for (var i=0; i<sumArray.length; i++){
+				for (a=1; a<N; a++) {
+					for (b=a+1; b<N; b++) {
+						for (c=b+1; c<N; c++) {
+							if ((a+b+c) == (sumArray[i]-sumOfArray(aArray))) {
+								if (!numberInArray(a, aArray) && !numberInArray(b, aArray) && !numberInArray(c, aArray)){
+									step = stepNumber(a, b, c, d, e, f, aArray);
+									if(numberInArray(step, stepArray)){
+										if (aArray.length == 1) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"</li>");
+										} else if (aArray.length == 2) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+										} else if (aArray.length == 3) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+										}
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 2:
+			/*
+			var found10 = false;
+			for (var i = 0; i < aArray.length; i++) {
+				if(aArray[i]>=10) {
+					found10 = true;
+					break;
+				}
+			}
+			if (numberCount == 3 && !found10) {
+				for (var i=0; i<sumArray.length; i++){
+					for (a=0; a<N; a++) {
+						for (b=0; b<N; b++) {
+							if ((a+b) == (sumArray[i]-sumOfArray(aArray))) {
+								step = stepNumber(a, b, c, d, e, f, aArray);
+								if(numberInArray(step, stepArray)){
+									if (aArray.length == 1) {
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+									}
+									count++;
+								}
+							}
+						}
+					}
+				}
+				
+			} else {
+				*/
+				for (var i=0; i<sumArray.length; i++){
+					for (a=1; a<N; a++) {
+						for (b=a+1; b<N; b++) {
+							if ((a+b) == (sumArray[i]-sumOfArray(aArray))) {
+								if (!numberInArray(a, aArray) && !numberInArray(b, aArray)){
+									step = stepNumber(a, b, c, d, e, f, aArray);
+									if(numberInArray(step, stepArray)){
+										if (aArray.length == 1) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+										} else if (aArray.length == 2) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+										} else if (aArray.length == 3) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+										} else if (aArray.length == 4) {
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+										}
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			//}
+			break;
+			case 1:
+			/*
+			var found10 = false;
+			for (var i = 0; i < aArray.length; i++) {
+				if(aArray[i]>=10) {
+					found10 = true;
+					break;
+				}
+			}
+			if (numberCount == 3 && !found10) {
+				for (var i=0; i<sumArray.length; i++){
+					for (a=0; a<N; a++) {
+						if ((a) == (sumArray[i]-sumOfArray(aArray))) {
+							step = stepNumber(a, b, c, d, e, f, aArray);
+							if(numberInArray(step, stepArray)){
+								if (aArray.length == 2) {
+									$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+								}
+								count++;
+							}
+						}
+					}
+				}
+			} else {
+				*/
+				for (var i=0; i<sumArray.length; i++){
+					for (a=1; a<N; a++) {
+						if ((a) == (sumArray[i]-sumOfArray(aArray))) {
+							if (!numberInArray(a, aArray)){
+								step = stepNumber(a, b, c, d, e, f, aArray);
+								if(numberInArray(step, stepArray)){
+									if (aArray.length == 1) {
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+									} else if (aArray.length == 2) {
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+									} else if (aArray.length == 3) {
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+									} else if (aArray.length == 4) {
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+									} else if (aArray.length == 5) {
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+aArray[4]+"</li>");
+									}
+									count++;
+								}
+							}
+						}
+					}
+				}
+				
+			//}
+			break;
+		}
+
+	} else if ((aArray.length > 0) && (numberCount < aArray.length)){
+
+		switch (numberCount) {
+			case 6:
+			N = aArray.length;
+			for (var i=0; i<sumArray.length; i++){
+				for (aj = 0; aj <N; aj++) {
+					a = aArray[aj]
+					for (bj = aj + 1; bj<N; bj++) {
+						b = aArray[bj];
+						for (cj = bj + 1; cj<N; cj++) {
+							c = aArray[cj];
+							for (dj = cj + 1; dj<N; dj++) {
+								d = aArray[dj];
+								for (ej = dj + 1; ej<N; ej++) {
+									e = aArray[ej];
+									for (fj = ej + 1; fj<N; fj++) {
+										f = aArray[fj];
+										if ((a+b+c+d+e+f) == sumArray[i]) {
+											if(numberInArray(f-a, stepArray)){
+												$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+e+"+"+f+"</li>");
+												count++;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 5:
+			N = aArray.length;
+			for (var i=0; i<sumArray.length; i++){
+				for (aj = 0; aj <N; aj++) {
+					a = aArray[aj]
+					for (bj = aj + 1; bj<N; bj++) {
+						b = aArray[bj];
+						for (cj = bj + 1; cj<N; cj++) {
+							c = aArray[cj];
+							for (dj = cj + 1; dj<N; dj++) {
+								d = aArray[dj];
+								for (ej = dj + 1; ej<N; ej++) {
+									e = aArray[ej];
+									if ((a+b+c+d+e) == sumArray[i]) {
+										if(numberInArray(e-a, stepArray)){
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"+"+e+"</li>");
+											count++;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 4:
+			N = aArray.length;
+			for (var i=0; i<sumArray.length; i++){
+				for (aj = 0; aj <N; aj++) {
+					a = aArray[aj]
+					for (bj = aj + 1; bj<N; bj++) {
+						b = aArray[bj];
+						for (cj = bj + 1; cj<N; cj++) {
+							c = aArray[cj];
+							for (dj = cj + 1; dj<N; dj++) {
+								d = aArray[dj];
+								if ((a+b+c+d) == sumArray[i]) {
+									if(numberInArray(d-a, stepArray)){
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+d+"</li>");
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+			case 3:
+			/*
+			var found10 = false;
+        	for (var i = 0; i < aArray.length; i++) {
+        		if(aArray[i]>=10) {
+        			found10 = true;
+        			break;
+        		}
+        	}
+			if (found10){
+				*/
+				N = aArray.length;
+				for (var i=0; i<sumArray.length; i++){
+					for (aj = 0; aj <N; aj++) {
+						a = aArray[aj]
+						for (bj = aj + 1; bj<N; bj++) {
+							b = aArray[bj];
+							for (cj = bj + 1; cj<N; cj++) {
+								c = aArray[cj];
+								if ((a+b+c) == sumArray[i]) {
+									if(numberInArray(d-a, stepArray)){
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"</li>");
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+/*
+			} else {
+				N = aArray.length;
+				for (var i=0; i<sumArray.length; i++){
+					for (aj = 0; aj <N; aj++) {
+						a = aArray[aj]
+						for (bj = 0; bj<N; bj++) {
+							b = aArray[bj];
+							for (cj = 0; cj<N; cj++) {
+								c = aArray[cj];
+								if ((a+b+c) == sumArray[i]) {
+									if(numberInArray(getABCMaxMinStep(a,b,c), stepArray)){
+
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"</li>");
+										count++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			*/
+			break;
+
+		}
+
+	}
+
+	if (count == 0) {
+		$("#six-ol-three").append("<li>无结果</li>");
+	}
+
+});
 
 $("#reset-1").click(function(){
 
@@ -927,15 +1312,6 @@ $("#reset-1").click(function(){
 	$("#six-ol").empty();
 });
 
-$("#clear-1").click(function(){
-	$("#six-ol").empty();
-});
-
-
-$("#clear-2").click(function(){
-	$("#six-ol-two").empty();
-});
-
 $("#reset-2").click(function(){
 	window.location.reload();
 
@@ -945,4 +1321,168 @@ $("#reset-2").click(function(){
 
 	$("#six-ol-two").empty();
 });
+
+$("#reset-3").click(function(){
+	window.location.reload();
+});
+
+$("#clear-1").click(function(){
+	$("#six-ol").empty();
+});
+
+$("#clear-2").click(function(){
+	$("#six-ol-two").empty();
+});
+
+$("#clear-3").click(function(){
+	$("#six-ol-three").empty();
+});
+
+$("#show-one-1").click(function(){
+  $("#sum-single").show();
+});
+
+$("#hide-one-1").click(function(){
+  $("#sum-single").hide();
+});
+
+
+$("#show-one-2").click(function(){
+  $("#sum-step").show();
+});
+
+$("#hide-one-2").click(function(){
+  $("#sum-step").hide();
+});
+
+
+$("#show-one-3").click(function(){
+  $("#a-six").show();
+});
+
+$("#hide-one-3").click(function(){
+  $("#a-six").hide();
+});
+
+$("#show-one-4").click(function(){
+  $("#b-six").show();
+});
+
+$("#hide-one-4").click(function(){
+  $("#b-six").hide();
+});
+
+$("#show-one-5").click(function(){
+  $("#c-six").show();
+});
+
+$("#hide-one-5").click(function(){
+  $("#c-six").hide();
+});
+
+$("#show-one-6").click(function(){
+  $("#d-six").show();
+});
+
+$("#hide-one-6").click(function(){
+  $("#d-six").hide();
+});
+
+$("#show-one-7").click(function(){
+  $("#e-six").show();
+});
+
+$("#hide-one-7").click(function(){
+  $("#e-six").hide();
+});
+
+
+$("#show-one-8").click(function(){
+  $("#f-six").show();
+});
+
+$("#hide-one-8").click(function(){
+  $("#f-six").hide();
+});
+
+
+
+
+$("#show-two-1").click(function(){
+  $("#sum-single-two").show();
+});
+
+$("#hide-two-1").click(function(){
+  $("#sum-single-two").hide();
+});
+
+
+$("#show-two-2").click(function(){
+  $("#sum-step-two").show();
+});
+
+$("#hide-two-2").click(function(){
+  $("#sum-step-two").hide();
+});
+
+
+$("#show-two-3").click(function(){
+  $("#a-six-two").show();
+});
+
+$("#hide-two-3").click(function(){
+  $("#a-six-two").hide();
+});
+
+
+
+$("#show-three-1").click(function(){
+  $("#sum-single-three").show();
+});
+
+$("#hide-three-1").click(function(){
+  $("#sum-single-three").hide();
+});
+
+
+$("#show-three-2").click(function(){
+  $("#sum-step-three").show();
+});
+
+$("#hide-three-2").click(function(){
+  $("#sum-step-three").hide();
+});
+
+
+$("#show-three-3").click(function(){
+  $("#a-six-three").show();
+});
+
+$("#hide-three-3").click(function(){
+  $("#a-six-three").hide();
+});
+
+
+function hideAll()
+{
+
+  $("#sum-single").hide();
+  $("#sum-step").hide();
+  $("#a-six").hide();
+  $("#b-six").hide();
+  $("#c-six").hide();
+  $("#d-six").hide();
+  $("#e-six").hide();
+  $("#f-six").hide();
+
+  $("#sum-single-two").hide();
+  $("#sum-step-two").hide();
+  $("#a-six-two").hide();
+
+  $("#sum-single-three").hide();
+  $("#sum-step-three").hide();
+  $("#a-six-three").hide();
+  
+}
+
 });
