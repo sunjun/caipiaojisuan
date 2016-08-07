@@ -2,9 +2,9 @@ SUM_COUNT = 190;
 STEP_COUNT = 36;
 NUMBER_COUNT = 36;
 
-SUM_COUNT_2 = 105;
-STEP_COUNT_2 = 20;
-NUMBER_COUNT_2 = 20;
+SUM_COUNT_2 = 106;
+STEP_COUNT_2 = 21;
+NUMBER_COUNT_2 = 21;
 
 function isContains(str, substr)
 {
@@ -120,13 +120,29 @@ function getArrayFromCheckbox(count, id)
 }
 
 
+function genrateCheckboxWith20(idString)
+{
+	var aaaa = [1,11,6,16,2,12,7,17,3,13,8,18,4,14,9,19,5,15,10,20,0];
+	for (var j = 0; j < aaaa.length; j++) {
+		var idS = idString+'-'+aaaa[j];
+		var div = '<div class="mdl-cell mdl-cell--1-col">';
+		var divEnd = '</div>';
+		var label = '<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="'+idS+'">';
+		var input = '<input type="checkbox" id="'+idS+'" class="mdl-checkbox__input">';
+		var span = '<span class="mdl-checkbox__label">'+aaaa[j]+'</span>';
+		var labelEnd = '</label>';
+		$("#"+idString).append(div+label+input+span+labelEnd+divEnd);
+	}
+}
+
+
 function genrateCheckboxWithStep(count, idString, step)
 {
 	var row = count / step + 1;
 	for (var j = 0; j < step; j++) {
 		for (var i = 0; i < row; i++) {
 			var ij = i * step + j;
-			if (ij <= count) {
+			if (ij < count) {
 				var idS = idString+'-'+ij;
 				var div = '<div class="mdl-cell mdl-cell--1-col">';
 				var divEnd = '</div>';
@@ -186,6 +202,20 @@ function reGetArrayFromSelection2(sumArray)
 
 }
 
+function sortArray(a){//排序大小
+	var i = j = t = 0;
+	for (i = 0; i < a.length; i++){
+		for (j = 0; j < a.length; j++){
+			if (a[i] < a[j]){
+				t = a[i];
+				a[i] = a[j];
+				a[j] = t;
+			} 
+		}
+	}
+	return a;
+}
+
 function reGetArrayFromSelection(start, end, sumArray)
 {
 	var startString = $("#"+start).find("option:selected").text();
@@ -212,7 +242,8 @@ function reGetArrayFromSelection(start, end, sumArray)
 			re.push(sumArray[i]);
 		}
 	}
-	return re;
+
+	return sortArray(re);
 }
 
 function genrateList()
@@ -403,7 +434,9 @@ $(document).ready(function(){
 	genrateCheckbox(STEP_COUNT_2, "sum-step-two");
 	genrateSelect(SUM_COUNT_2, "sum-start-two");
 	genrateSelect(SUM_COUNT_2, "sum-end-two");
-	genrateCheckboxWithStep(NUMBER_COUNT_2, "a-six-two", 10);
+//	genrateCheckboxWithStep(NUMBER_COUNT_2, "a-six-two", 10);
+//	genrateCheckbox(NUMBER_COUNT_2, "a-six-two");
+	genrateCheckboxWith20("a-six-two");
 
 
 	genrateCheckbox(SUM_COUNT, "sum-single-three");
@@ -600,11 +633,14 @@ $(document).ready(function(){
         	default:
         }
 
-
-
         if (count == 0) {
         	$("#six-ol").append("<li>无结果</li>");
+        	$("#result-one").html(0);
+        } else {
+        	$("#result-one").html(count+"种组合");
         }
+
+
     });
 
 
@@ -783,15 +819,15 @@ $("#six-two").click(function(){
 								step = stepNumber(a, b, c, d, e, f, aArray);
 								if(numberInArray(step, stepArray)){
 									if (aArray.length == 1) {
-										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"</li>");
 									} else if (aArray.length == 2) {
-										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"</li>");
 									} else if (aArray.length == 3) {
-										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"</li>");
 									} else if (aArray.length == 4) {
-										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"+"+aArray[3]+"</li>");
 									} else if (aArray.length == 5) {
-										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+aArray[4]+"</li>");
+										$("#six-ol-two").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"+"+aArray[3]+"+"+aArray[4]+"</li>");
 									}
 									count++;
 								}
@@ -945,6 +981,9 @@ $("#six-two").click(function(){
 
 	if (count == 0) {
 		$("#six-ol-two").append("<li>无结果</li>");
+		$("#result-two").html(0);
+	} else {
+		$("#result-two").html(count+"种组合");
 	}
 
 });
@@ -955,10 +994,10 @@ $("#six-three").click(function(){
 	var N = NUMBER_COUNT;
 	var count = 0;
 	var sumArray = getArrayFromCheckbox(SUM_COUNT, "sum-single-three");
-	var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-single-three");
-	var aArray = getArrayFromCheckbox(NUMBER_COUNT, "sum-single-three");
+	var stepArray = getArrayFromCheckbox(STEP_COUNT, "sum-step-three");
+	var aArray = getArrayFromCheckbox(NUMBER_COUNT, "a-six-three");
 
-	var numberCount = Number($("#number-count").find("option:selected").text());
+	var numberCount = Number($("#number-count-three").find("option:selected").text());
 
 	sumArray = reGetArrayFromSelection("sum-start-three", "sum-end-three",sumArray);
 
@@ -1028,7 +1067,7 @@ $("#six-three").click(function(){
 										} else if (aArray.length == 2) {
 											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+"</li>");
 										} else if (aArray.length == 3) {
-											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+c+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"</li>");
 										}
 										count++;
 									}
@@ -1079,9 +1118,9 @@ $("#six-three").click(function(){
 										} else if (aArray.length == 2) {
 											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
 										} else if (aArray.length == 3) {
-											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"</li>");
 										} else if (aArray.length == 4) {
-											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+											$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"+"+aArray[3]+"</li>");
 										}
 										count++;
 									}
@@ -1124,15 +1163,15 @@ $("#six-three").click(function(){
 								step = stepNumber(a, b, c, d, e, f, aArray);
 								if(numberInArray(step, stepArray)){
 									if (aArray.length == 1) {
-										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"</li>");
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"</li>");
 									} else if (aArray.length == 2) {
-										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+"</li>");
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"</li>");
 									} else if (aArray.length == 3) {
-										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+"</li>");
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"</li>");
 									} else if (aArray.length == 4) {
-										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+"</li>");
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"+"+aArray[3]+"</li>");
 									} else if (aArray.length == 5) {
-										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+b+"+"+aArray[0]+"+"+aArray[1]+aArray[2]+aArray[3]+aArray[4]+"</li>");
+										$("#six-ol-three").append("<li>"+sumArray[i]+"="+a+"+"+aArray[0]+"+"+aArray[1]+"+"+aArray[2]+"+"+aArray[3]+"+"+aArray[4]+"</li>");
 									}
 									count++;
 								}
@@ -1143,6 +1182,7 @@ $("#six-three").click(function(){
 				
 			//}
 			break;
+
 		}
 
 	} else if ((aArray.length > 0) && (numberCount < aArray.length)){
@@ -1286,6 +1326,9 @@ $("#six-three").click(function(){
 
 	if (count == 0) {
 		$("#six-ol-three").append("<li>无结果</li>");
+		$("#result-three").html(0);
+	} else {
+		$("#result-three").html(count+"种组合");
 	}
 
 });
